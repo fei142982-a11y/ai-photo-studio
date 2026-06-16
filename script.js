@@ -128,10 +128,6 @@ const ANYCAP_API_KEY = 'ak_5c03bb9cbc1ede0d6acfb7bf';
 const ANYCAP_ENDPOINT = 'https://api.anycap.ai';
 
 async function generateWithAnyCap(base64Image, style) {
-    // 1. 上传图片获取URL
-    const imageUrl = await uploadToAnyCap(base64Image);
-
-    // 2. 调用图片生成API
     const prompt = stylePrompts[style] + ', maintaining the same face and identity as the reference photo, high quality, 4K, professional photography';
 
     const response = await fetch(`${ANYCAP_ENDPOINT}/v1/image/generate`, {
@@ -144,7 +140,7 @@ async function generateWithAnyCap(base64Image, style) {
             prompt: prompt,
             model: 'gpt-image-2',
             mode: 'image-to-image',
-            params: { images: [imageUrl] }
+            params: { images: [base64Image] }
         })
     });
 
@@ -155,31 +151,6 @@ async function generateWithAnyCap(base64Image, style) {
     } else {
         throw new Error(result.message || '生成失败');
     }
-}
-
-async function uploadToAnyCap(base64Image) {
-    // 将 base64 转为 blob
-    const res = await fetch(base64Image);
-    const blob = await res.blob();
-
-    const formData = new FormData();
-    formData.append('file', blob, 'photo.png');
-
-    const response = await fetch(`${ANYCAP_ENDPOINT}/v1/drive/upload`, {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${ANYCAP_API_KEY}`
-        },
-        body: formData
-    });
-
-    const result = await response.json();
-    if (result.data && result.data.url) {
-        return result.data.url;
-    } else if (result.url) {
-        return result.url;
-    }
-    throw new Error('图片上传失败');
 }
 
 // ========== 生成写真 ==========
