@@ -150,8 +150,8 @@ async function generateWithAnyCap(base64Image, style) {
 
     const result = await response.json();
 
-    if (result.status === 'success' && result.url) {
-        return { success: true, imageUrl: result.url, credits: result.credits_used };
+    if (result.status === 'success' && result.data && result.data.outputs && result.data.outputs[0]) {
+        return { success: true, imageUrl: result.data.outputs[0].url, credits: result.data.credit_cost };
     } else {
         throw new Error(result.message || '生成失败');
     }
