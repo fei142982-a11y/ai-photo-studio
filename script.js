@@ -14,6 +14,34 @@ const stylePrompts = {
     '杂志封面': 'Fashion magazine cover portrait, high fashion, dramatic lighting, editorial photography, bold and confident, studio quality'
 };
 
+// 演示模式滤镜配置（CSS filter 语法）
+const demoFilters = {
+    '日系清新':   'brightness(1.15) saturate(1.1) contrast(0.9) sepia(0.1)',
+    '韩式证件照': 'brightness(1.1) contrast(1.05) saturate(0.85)',
+    '复古港风':   'contrast(1.2) saturate(0.7) sepia(0.4) brightness(0.95)',
+    '赛博朋克':   'contrast(1.3) saturate(1.6) hue-rotate(180deg) brightness(1.05)',
+    '国风古韵':   'contrast(1.1) saturate(0.8) sepia(0.25) brightness(1.05)',
+    '杂志封面':   'contrast(1.15) saturate(0.9) grayscale(0.3) brightness(1.05)'
+};
+
+// 演示模式：用 Canvas 给原图加滤镜
+function applyDemoFilter(base64Image, style) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.filter = demoFilters[style] || 'none';
+            ctx.drawImage(img, 0, 0);
+            resolve(canvas.toDataURL('image/png'));
+        };
+        img.onerror = () => resolve(base64Image); // fallback: 返回原图
+        img.src = base64Image;
+    });
+}
+
 // 模拟作品数据
 const galleryData = [
     { style: '日系清新', author: '小樱花', emoji: '🌸' },
@@ -141,11 +169,12 @@ async function generate() {
             });
             data = await response.json();
         } catch (apiErr) {
-            // 后端不可用，使用演示模式（直接显示原图+风格滤镜）
+            // 后端不可用，使用演示模式（原图 + 风格滤镜）
             console.log('后端不可用，进入演示模式');
+            const filteredImage = await applyDemoFilter(base64, selectedStyle);
             data = {
                 success: true,
-                imageUrl: base64,
+                imageUrl: filteredImage,
                 demo: true
             };
         }
@@ -317,8 +346,7 @@ const PLANS = {
 };
 
 function showRechargeModal() {
-    document.getElementById('rechargeStep1').style.display = 'block';
-    document.getElementById('rechargeStep2').style.display = 'none';
+    updatePaymentInfo();
     document.getElementById('rechargeModal').style.display = 'flex';
 }
 
@@ -330,6 +358,15 @@ function selectRecharge(plan) {
     selectedRecharge = plan;
     document.querySelectorAll('.recharge-item').forEach(item => item.classList.remove('selected'));
     event.currentTarget.classList.add('selected');
+    updatePaymentInfo();
+}
+
+function updatePaymentInfo() {
+    const plan = PLANS[selectedRecharge];
+    if (!plan) return;
+    document.getElementById('payPlan').textContent = plan.name;
+    document.getElementById('payCredits').textContent = `${plan.credits} 次`;
+    document.getElementById('payPrice').textContent = `¥${plan.price}`;
 }
 
 function recharge(plan) {
@@ -339,26 +376,6 @@ function recharge(plan) {
     }
     selectedRecharge = plan;
     showRechargeModal();
-}
-
-function goToPayment() {
-    const plan = PLANS[selectedRecharge];
-    if (!plan) return;
-
-    // 更新付款页面信息
-    document.getElementById('payAmount').textContent = `¥${plan.price}`;
-    document.getElementById('payPlan').textContent = plan.name;
-    document.getElementById('payCredits').textContent = `${plan.credits} 次`;
-    document.getElementById('payPrice').textContent = `¥${plan.price}`;
-
-    // 切换到付款页面
-    document.getElementById('rechargeStep1').style.display = 'none';
-    document.getElementById('rechargeStep2').style.display = 'block';
-}
-
-function backToRecharge() {
-    document.getElementById('rechargeStep1').style.display = 'block';
-    document.getElementById('rechargeStep2').style.display = 'none';
 }
 
 function confirmPaid() {
