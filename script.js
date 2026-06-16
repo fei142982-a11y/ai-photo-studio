@@ -123,6 +123,65 @@ function setupStyleCards() {
     });
 }
 
+// ========== AnyCap API 调用 ==========
+const ANYCAP_API_KEY = 'ak_5c03bb9cbc1ede0d6acfb7bf';
+const ANYCAP_ENDPOINT = 'https://api.anycap.ai';
+
+async function generateWithAnyCap(base64Image, style) {
+    // 1. 上传图片获取URL
+    const imageUrl = await uploadToAnyCap(base64Image);
+
+    // 2. 调用图片生成API
+    const prompt = stylePrompts[style] + ', maintaining the same face and identity as the reference photo, high quality, 4K, professional photography';
+
+    const response = await fetch(`${ANYCAP_ENDPOINT}/v1/image/generate`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${ANYCAP_API_KEY}`
+        },
+        body: JSON.stringify({
+            prompt: prompt,
+            model: 'gpt-image-2',
+            mode: 'image-to-image',
+            params: { images: [imageUrl] }
+        })
+    });
+
+    const result = await response.json();
+
+    if (result.status === 'success' && result.url) {
+        return { success: true, imageUrl: result.url, credits: result.credits_used };
+    } else {
+        throw new Error(result.message || '生成失败');
+    }
+}
+
+async function uploadToAnyCap(base64Image) {
+    // 将 base64 转为 blob
+    const res = await fetch(base64Image);
+    const blob = await res.blob();
+
+    const formData = new FormData();
+    formData.append('file', blob, 'photo.png');
+
+    const response = await fetch(`${ANYCAP_ENDPOINT}/v1/drive/upload`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${ANYCAP_API_KEY}`
+        },
+        body: formData
+    });
+
+    const result = await response.json();
+    if (result.data && result.data.url) {
+        return result.data.url;
+    } else if (result.url) {
+        return result.url;
+    }
+    throw new Error('图片上传失败');
+}
+
 // ========== 生成写真 ==========
 async function generate() {
     if (!uploadedFile) {
@@ -155,22 +214,12 @@ async function generate() {
     try {
         const base64 = await fileToBase64(uploadedFile);
 
-        // 尝试调用后端 API，如果不可用则使用演示模式
+        // 调用 AnyCap API 生成写真
         let data;
         try {
-            const response = await fetch('/api/generate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    image: base64,
-                    style: selectedStyle,
-                    prompt: stylePrompts[selectedStyle]
-                })
-            });
-            data = await response.json();
+            data = await generateWithAnyCap(base64, selectedStyle);
         } catch (apiErr) {
-            // 后端不可用，使用演示模式（原图 + 风格滤镜）
-            console.log('后端不可用，进入演示模式');
+            console.log('API调用失败，进入演示模式', apiErr);
             const filteredImage = await applyDemoFilter(base64, selectedStyle);
             data = {
                 success: true,
