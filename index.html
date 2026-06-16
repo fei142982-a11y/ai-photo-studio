@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 写真馆 - 一键生成你的专属写真</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-effects">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Navigation -->
+        <nav>
+            <div class="logo">
+                <span class="logo-icon">✨</span>
+                <span class="logo-text">AI 写真馆</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link active">首页</a>
+                <a href="#gallery" class="nav-link">作品墙</a>
+                <a href="#pricing" class="nav-link">价格</a>
+            </div>
+            <div class="nav-actions">
+                <span class="credits-badge">💎 剩余 <span id="credits">250</span> 次</span>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-badge">🔥 AI 驱动 · 一键生成</div>
+            <h1>你的专属<span class="gradient-text">AI 写真</span></h1>
+            <p class="hero-desc">上传一张照片，AI 为你生成 6 种风格的专业写真。日系清新、韩式证件照、复古港风...每一张都是大片。</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-num">6+</span>
+                    <span class="stat-label">写真风格</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-num">30s</span>
+                    <span class="stat-label">生成速度</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-num">4K</span>
+                    <span class="stat-label">输出质量</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main App -->
+        <section class="app-section">
+            <!-- Upload Area -->
+            <div class="app-card upload-card">
+                <div class="card-header">
+                    <div class="card-icon">📸</div>
+                    <div>
+                        <h3>上传照片</h3>
+                        <p>选择一张清晰的正面照</p>
+                    </div>
+                </div>
+                <div class="upload-zone" id="uploadArea">
+                    <div class="upload-content" id="uploadContent">
+                        <div class="upload-ring">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="8 4" opacity="0.3"/>
+                            </svg>
+                            <span class="upload-plus">+</span>
+                        </div>
+                        <p class="upload-text">拖拽或点击上传</p>
+                        <span class="upload-hint">支持 JPG、PNG · 建议正面清晰照</span>
+                    </div>
+                    <div class="preview-content" id="previewArea" style="display:none">
+                        <div class="preview-frame">
+                            <img id="previewImg" src="" alt="预览">
+                            <div class="preview-overlay">
+                                <button class="btn-change" onclick="removeImage()">📷 更换照片</button>
+                            </div>
+                        </div>
+                        <div class="preview-info">
+                            <span class="file-name" id="fileName">photo.jpg</span>
+                            <span class="file-size" id="fileSize">2.1 MB</span>
+                        </div>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                </div>
+            </div>
+
+            <!-- Style Selection -->
+            <div class="app-card style-card">
+                <div class="card-header">
+                    <div class="card-icon">🎨</div>
+                    <div>
+                        <h3>选择风格</h3>
+                        <p>挑选你喜欢的写真风格</p>
+                    </div>
+                </div>
+                <div class="style-grid">
+                    <div class="style-item selected" data-style="日系清新">
+                        <div class="style-visual" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)">
+                            <span>🌸</span>
+                        </div>
+                        <div class="style-info">
+                            <strong>日系清新</strong>
+                            <small>自然光 · 暖色调</small>
+                        </div>
+                        <div class="style-check">✓</div>
+                    </div>
+                    <div class="style-item" data-style="韩式证件照">
+                        <div class="style-visual" style="background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)">
+                            <span>💼</span>
+                        </div>
+                        <div class="style-info">
+                            <strong>韩式证件照</strong>
+                            <small>影棚光 · 干净背景</small>
+                        </div>
+                        <div class="style-check">✓</div>
+                    </div>
+                    <div class="style-item" data-style="复古港风">
+                        <div class="style-visual" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                            <span>🎞️</span>
+                        </div>
+                        <div class="style-info">
+                            <strong>复古港风</strong>
+                            <small>胶片感 · 电影色调</small>
+                        </div>
+                        <div class="style-check">✓</div>
+                    </div>
+                    <div class="style-item" data-style="赛博朋克">
+                        <div class="style-visual" style="background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)">
+                            <span>🤖</span>
+                        </div>
+                        <div class="style-info">
+                            <strong>赛博朋克</strong>
+                            <small>霓虹灯 · 未来感</small>
+                        </div>
+                        <div class="style-check">✓</div>
+                    </div>
+                    <div class="style-item" data-style="国风古韵">
+                        <div class="style-visual" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #d4a574 100%)">
+                            <span>🏯</span>
+                        </div>
+                        <div class="style-info">
+                            <strong>国风古韵</strong>
+                            <small>汉服 · 水墨意境</small>
+                        </div>
+                        <div class="style-check">✓</div>
+                    </div>
+                    <div class="style-item" data-style="杂志封面">
+                        <div class="style-visual" style="background: linear-gradient(135deg, #434343 0%, #000000 100%)">
+                            <span>📰</span>
+                        </div>
+                        <div class="style-info">
+                            <strong>杂志封面</strong>
+                            <small>时尚 · 大片质感</small>
+                        </div>
+                        <div class="style-check">✓</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Generate Button -->
+        <section class="generate-section">
+            <button class="btn-generate" id="btnGenerate" onclick="generate()">
+                <span class="btn-content">
+                    <span class="btn-icon">✨</span>
+                    <span class="btn-text">生成我的写真</span>
+                </span>
+                <div class="btn-shine"></div>
+            </button>
+            <p class="generate-hint">通常需要 10-30 秒 · 消耗 1 次额度</p>
+        </section>
+
+        <!-- Loading -->
+        <section class="loading-section" id="loading" style="display:none">
+            <div class="loading-card">
+                <div class="loading-animation">
+                    <div class="loading-ring"></div>
+                    <div class="loading-icon">✨</div>
+                </div>
+                <h3>AI 正在创作中</h3>
+                <p>正在为你生成专属写真，请稍候...</p>
+                <div class="loading-bar">
+                    <div class="loading-progress"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Result -->
+        <section class="result-section" id="resultSection" style="display:none">
+            <div class="result-card">
+                <div class="result-header">
+                    <span class="result-badge">🎉 生成完成</span>
+                    <h2>你的 AI 写真</h2>
+                </div>
+                <div class="result-image">
+                    <img id="resultImg" src="" alt="AI写真">
+                    <div class="result-actions">
+                        <button class="btn-primary" onclick="download()">
+                            <span>📥</span> 下载高清图
+                        </button>
+                        <button class="btn-secondary" onclick="generate()">
+                            <span>🔄</span> 重新生成
+                        </button>
+                    </div>
+                </div>
+                <div class="result-meta">
+                    <span>风格：<strong id="resultStyle">日系清新</strong></span>
+                    <span>消耗：<strong>1 次额度</strong></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="features-section">
+            <h2>为什么选择 AI 写真馆</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <h4>极速生成</h4>
+                    <p>30 秒内完成，无需等待</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎯</div>
+                    <h4>高度还原</h4>
+                    <p>保留你的五官特征，自然真实</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💰</div>
+                    <h4>超低成本</h4>
+                    <p>每次仅需几毛钱，影楼价格的 1/100</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔒</div>
+                    <h4>隐私安全</h4>
+                    <p>照片即用即删，不保存不泄露</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo-icon">✨</span>
+                    <span>AI 写真馆</span>
+                </div>
+                <p class="footer-copy">Made with 💙 by cc & fei142982 · 2026</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
