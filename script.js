@@ -297,7 +297,15 @@ function saveUserToStorage() {
 }
 
 // ========== 充值系统 ==========
+const PLANS = {
+    'standard':  { credits: 50,   price: 9.9,  name: '标准套餐' },
+    'pro':       { credits: 200,  price: 29.9, name: '专业套餐' },
+    'enterprise':{ credits: 1000, price: 99,   name: '企业套餐' }
+};
+
 function showRechargeModal() {
+    document.getElementById('rechargeStep1').style.display = 'block';
+    document.getElementById('rechargeStep2').style.display = 'none';
     document.getElementById('rechargeModal').style.display = 'flex';
 }
 
@@ -320,18 +328,39 @@ function recharge(plan) {
     showRechargeModal();
 }
 
-function confirmRecharge() {
-    const plans = {
-        'standard': { credits: 50, price: 9.9 },
-        'pro': { credits: 200, price: 29.9 },
-        'enterprise': { credits: 1000, price: 99 }
-    };
-    const plan = plans[selectedRecharge];
+function goToPayment() {
+    const plan = PLANS[selectedRecharge];
+    if (!plan) return;
+
+    // 更新付款页面信息
+    document.getElementById('payAmount').textContent = `¥${plan.price}`;
+    document.getElementById('payPlan').textContent = plan.name;
+    document.getElementById('payCredits').textContent = `${plan.credits} 次`;
+    document.getElementById('payPrice').textContent = `¥${plan.price}`;
+
+    // 切换到付款页面
+    document.getElementById('rechargeStep1').style.display = 'none';
+    document.getElementById('rechargeStep2').style.display = 'block';
+}
+
+function backToRecharge() {
+    document.getElementById('rechargeStep1').style.display = 'block';
+    document.getElementById('rechargeStep2').style.display = 'none';
+}
+
+function confirmPaid() {
+    showNotification('已收到付款确认请求，请等待管理员审核', 'info');
+    closeRechargeModal();
+}
+
+// 演示模式：模拟付款成功
+function simulatePay() {
+    const plan = PLANS[selectedRecharge];
     currentUser.credits += plan.credits;
     saveUserToStorage();
     updateCreditsDisplay();
     closeRechargeModal();
-    showNotification(`充值成功！已到账 ${plan.credits} 次额度`, 'success');
+    showNotification(`模拟付款成功！已到账 ${plan.credits} 次额度`, 'success');
 }
 
 // ========== 历史记录 ==========

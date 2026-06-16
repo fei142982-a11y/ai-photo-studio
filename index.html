@@ -352,34 +352,68 @@
     <div class="modal-overlay" id="rechargeModal" style="display:none">
         <div class="modal">
             <button class="modal-close" onclick="closeRechargeModal()">✕</button>
-            <h2 style="margin-bottom: 8px;">💎 充值中心</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 24px;">选择套餐，即买即用</p>
-            <div class="recharge-options">
-                <div class="recharge-item" onclick="selectRecharge('standard')">
-                    <div class="recharge-info">
-                        <strong>标准套餐</strong>
-                        <span>50 次额度</span>
+
+            <!-- Step 1: 选择套餐 -->
+            <div id="rechargeStep1">
+                <h2 style="margin-bottom: 8px;">💎 充值中心</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">选择套餐，扫码付款</p>
+                <div class="recharge-options">
+                    <div class="recharge-item" onclick="selectRecharge('standard')">
+                        <div class="recharge-info"><strong>标准套餐</strong><span>50 次额度</span></div>
+                        <div class="recharge-price">¥9.9</div>
                     </div>
-                    <div class="recharge-price">¥9.9</div>
-                </div>
-                <div class="recharge-item selected" onclick="selectRecharge('pro')">
-                    <div class="recharge-info">
-                        <strong>专业套餐</strong>
-                        <span>200 次额度</span>
+                    <div class="recharge-item selected" onclick="selectRecharge('pro')">
+                        <div class="recharge-info"><strong>专业套餐</strong><span>200 次额度</span></div>
+                        <div class="recharge-price">¥29.9</div>
+                        <div class="recharge-tag">推荐</div>
                     </div>
-                    <div class="recharge-price">¥29.9</div>
-                    <div class="recharge-tag">推荐</div>
-                </div>
-                <div class="recharge-item" onclick="selectRecharge('enterprise')">
-                    <div class="recharge-info">
-                        <strong>企业套餐</strong>
-                        <span>1000 次额度</span>
+                    <div class="recharge-item" onclick="selectRecharge('enterprise')">
+                        <div class="recharge-info"><strong>企业套餐</strong><span>1000 次额度</span></div>
+                        <div class="recharge-price">¥99</div>
                     </div>
-                    <div class="recharge-price">¥99</div>
                 </div>
+                <button class="btn-submit" onclick="goToPayment()">下一步：扫码付款</button>
             </div>
-            <button class="btn-submit" onclick="confirmRecharge()">确认充值（模拟）</button>
-            <p class="form-hint" style="margin-top: 12px;">⚠️ 这是演示项目，充值为模拟操作</p>
+
+            <!-- Step 2: 扫码付款 -->
+            <div id="rechargeStep2" style="display:none">
+                <button class="btn-back" onclick="backToRecharge()">← 返回选择套餐</button>
+                <h2 style="margin-bottom: 8px;">📱 扫码付款</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    请扫描下方二维码支付 <strong id="payAmount">¥29.9</strong>
+                </p>
+                <div class="payment-qr">
+                    <div class="qr-placeholder" id="qrCode">
+                        <div class="qr-inner">
+                            <span style="font-size: 3rem;">💳</span>
+                            <p>此处放置你的收款码</p>
+                            <small>微信 / 支付宝</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="payment-info">
+                    <div class="pay-detail">
+                        <span>套餐</span>
+                        <strong id="payPlan">专业套餐</strong>
+                    </div>
+                    <div class="pay-detail">
+                        <span>额度</span>
+                        <strong id="payCredits">200 次</strong>
+                    </div>
+                    <div class="pay-detail">
+                        <span>金额</span>
+                        <strong id="payPrice">¥29.9</strong>
+                    </div>
+                </div>
+                <div class="payment-notice">
+                    <p>⚠️ 付款后请添加微信 <strong>your_wechat_id</strong> 发送截图</p>
+                    <p>管理员确认后会立即到账（通常 5 分钟内）</p>
+                </div>
+                <button class="btn-submit" onclick="confirmPaid()">我已完成付款</button>
+                <p class="form-hint" style="margin-top: 12px;">
+                    演示模式：<a href="#" onclick="simulatePay()">点击模拟付款成功</a>
+                </p>
+            </div>
         </div>
     </div>
 

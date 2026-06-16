@@ -201,6 +201,23 @@ nav { display: flex; align-items: center; justify-content: space-between; paddin
 
 /* Footer */
 footer { border-top: 1px solid var(--border); padding: 32px 0; }
+
+/* Payment Flow */
+.btn-back { background: none; border: none; color: var(--text-muted); font-size: 0.9rem; cursor: pointer; margin-bottom: 16px; display: block; }
+.btn-back:hover { color: var(--text); }
+.payment-qr { text-align: center; margin-bottom: 24px; }
+.qr-placeholder { width: 200px; height: 200px; margin: 0 auto; background: var(--bg); border: 2px dashed var(--border); border-radius: 16px; display: flex; align-items: center; justify-content: center; }
+.qr-inner { text-align: center; }
+.qr-inner p { font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px; }
+.qr-inner small { color: var(--text-muted); font-size: 0.75rem; }
+.payment-info { background: var(--bg); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+.pay-detail { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.pay-detail:last-child { border-bottom: none; }
+.pay-detail span { color: var(--text-muted); font-size: 0.9rem; }
+.pay-detail strong { font-size: 0.9rem; }
+.payment-notice { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 10px; padding: 16px; margin-bottom: 20px; text-align: center; }
+.payment-notice p { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px; }
+.payment-notice strong { color: var(--warning); }
 .footer-content { display: flex; justify-content: space-between; align-items: center; }
 .footer-brand { display: flex; align-items: center; gap: 8px; font-weight: 600; }
 .footer-copy { color: var(--text-muted); font-size: 0.85rem; }
