@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 写真馆 - 一键生成你的专属写真</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
 </head>
 <body>
     <!-- Background Effects -->
@@ -28,7 +27,21 @@
                 <a href="#pricing" class="nav-link">价格</a>
             </div>
             <div class="nav-actions">
-                <span class="credits-badge">💎 剩余 <span id="credits">250</span> 次</span>
+                <span class="credits-badge" id="creditsBadge" style="display:none">💎 <span id="credits">250</span> 次</span>
+                <button class="btn-login" id="btnLoginNav" onclick="showLoginModal()">登录</button>
+                <div class="user-menu" id="userMenu" style="display:none">
+                    <div class="user-avatar" onclick="toggleUserDropdown()">👤</div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="dropdown-header">
+                            <strong id="dropdownName">用户</strong>
+                            <span id="dropdownEmail">user@email.com</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" onclick="showHistory()">📜 生成记录</a>
+                        <a href="#" onclick="showRechargeModal()">💎 充值中心</a>
+                        <a href="#" onclick="logout()">🚪 退出登录</a>
+                    </div>
+                </div>
             </div>
         </nav>
 
@@ -102,63 +115,33 @@
                 </div>
                 <div class="style-grid">
                     <div class="style-item selected" data-style="日系清新">
-                        <div class="style-visual" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)">
-                            <span>🌸</span>
-                        </div>
-                        <div class="style-info">
-                            <strong>日系清新</strong>
-                            <small>自然光 · 暖色调</small>
-                        </div>
+                        <div class="style-visual" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)"><span>🌸</span></div>
+                        <div class="style-info"><strong>日系清新</strong><small>自然光 · 暖色调</small></div>
                         <div class="style-check">✓</div>
                     </div>
                     <div class="style-item" data-style="韩式证件照">
-                        <div class="style-visual" style="background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)">
-                            <span>💼</span>
-                        </div>
-                        <div class="style-info">
-                            <strong>韩式证件照</strong>
-                            <small>影棚光 · 干净背景</small>
-                        </div>
+                        <div class="style-visual" style="background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)"><span>💼</span></div>
+                        <div class="style-info"><strong>韩式证件照</strong><small>影棚光 · 干净背景</small></div>
                         <div class="style-check">✓</div>
                     </div>
                     <div class="style-item" data-style="复古港风">
-                        <div class="style-visual" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
-                            <span>🎞️</span>
-                        </div>
-                        <div class="style-info">
-                            <strong>复古港风</strong>
-                            <small>胶片感 · 电影色调</small>
-                        </div>
+                        <div class="style-visual" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"><span>🎞️</span></div>
+                        <div class="style-info"><strong>复古港风</strong><small>胶片感 · 电影色调</small></div>
                         <div class="style-check">✓</div>
                     </div>
                     <div class="style-item" data-style="赛博朋克">
-                        <div class="style-visual" style="background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)">
-                            <span>🤖</span>
-                        </div>
-                        <div class="style-info">
-                            <strong>赛博朋克</strong>
-                            <small>霓虹灯 · 未来感</small>
-                        </div>
+                        <div class="style-visual" style="background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)"><span>🤖</span></div>
+                        <div class="style-info"><strong>赛博朋克</strong><small>霓虹灯 · 未来感</small></div>
                         <div class="style-check">✓</div>
                     </div>
                     <div class="style-item" data-style="国风古韵">
-                        <div class="style-visual" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #d4a574 100%)">
-                            <span>🏯</span>
-                        </div>
-                        <div class="style-info">
-                            <strong>国风古韵</strong>
-                            <small>汉服 · 水墨意境</small>
-                        </div>
+                        <div class="style-visual" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #d4a574 100%)"><span>🏯</span></div>
+                        <div class="style-info"><strong>国风古韵</strong><small>汉服 · 水墨意境</small></div>
                         <div class="style-check">✓</div>
                     </div>
                     <div class="style-item" data-style="杂志封面">
-                        <div class="style-visual" style="background: linear-gradient(135deg, #434343 0%, #000000 100%)">
-                            <span>📰</span>
-                        </div>
-                        <div class="style-info">
-                            <strong>杂志封面</strong>
-                            <small>时尚 · 大片质感</small>
-                        </div>
+                        <div class="style-visual" style="background: linear-gradient(135deg, #434343 0%, #000000 100%)"><span>📰</span></div>
+                        <div class="style-info"><strong>杂志封面</strong><small>时尚 · 大片质感</small></div>
                         <div class="style-check">✓</div>
                     </div>
                 </div>
@@ -186,9 +169,7 @@
                 </div>
                 <h3>AI 正在创作中</h3>
                 <p>正在为你生成专属写真，请稍候...</p>
-                <div class="loading-bar">
-                    <div class="loading-progress"></div>
-                </div>
+                <div class="loading-bar"><div class="loading-progress"></div></div>
             </div>
         </section>
 
@@ -202,12 +183,8 @@
                 <div class="result-image">
                     <img id="resultImg" src="" alt="AI写真">
                     <div class="result-actions">
-                        <button class="btn-primary" onclick="download()">
-                            <span>📥</span> 下载高清图
-                        </button>
-                        <button class="btn-secondary" onclick="generate()">
-                            <span>🔄</span> 重新生成
-                        </button>
+                        <button class="btn-primary" onclick="download()"><span>📥</span> 下载高清图</button>
+                        <button class="btn-secondary" onclick="generate()"><span>🔄</span> 重新生成</button>
                     </div>
                 </div>
                 <div class="result-meta">
@@ -217,43 +194,205 @@
             </div>
         </section>
 
+        <!-- Gallery Section -->
+        <section class="gallery-section" id="gallery">
+            <div class="section-header">
+                <h2>🖼️ 作品展示墙</h2>
+                <p>看看其他用户的 AI 写真作品</p>
+            </div>
+            <div class="gallery-filter">
+                <button class="filter-btn active" onclick="filterGallery('all')">全部</button>
+                <button class="filter-btn" onclick="filterGallery('日系清新')">日系清新</button>
+                <button class="filter-btn" onclick="filterGallery('韩式证件照')">韩式证件照</button>
+                <button class="filter-btn" onclick="filterGallery('复古港风')">复古港风</button>
+                <button class="filter-btn" onclick="filterGallery('赛博朋克')">赛博朋克</button>
+                <button class="filter-btn" onclick="filterGallery('国风古韵')">国风古韵</button>
+                <button class="filter-btn" onclick="filterGallery('杂志封面')">杂志封面</button>
+            </div>
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- 动态生成 -->
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section class="pricing-section" id="pricing">
+            <div class="section-header">
+                <h2>💎 套餐价格</h2>
+                <p>选择适合你的套餐，即买即用</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-badge">体验</div>
+                    <h3>免费试用</h3>
+                    <div class="pricing-price">
+                        <span class="price-num">¥0</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✅ 注册送 5 次额度</li>
+                        <li>✅ 全部风格可用</li>
+                        <li>✅ 高清下载</li>
+                        <li class="disabled">❌ 批量生成</li>
+                        <li class="disabled">❌ 优先队列</li>
+                    </ul>
+                    <button class="btn-pricing" onclick="showLoginModal()">免费注册</button>
+                </div>
+                <div class="pricing-card popular">
+                    <div class="popular-badge">🔥 最受欢迎</div>
+                    <h3>标准套餐</h3>
+                    <div class="pricing-price">
+                        <span class="price-num">¥9.9</span>
+                        <span class="price-unit">/ 50次</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✅ 50 次生成额度</li>
+                        <li>✅ 全部风格可用</li>
+                        <li>✅ 高清下载</li>
+                        <li>✅ 批量生成</li>
+                        <li class="disabled">❌ 优先队列</li>
+                    </ul>
+                    <button class="btn-pricing popular-btn" onclick="recharge('standard')">立即购买</button>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-badge">专业</div>
+                    <h3>专业套餐</h3>
+                    <div class="pricing-price">
+                        <span class="price-num">¥29.9</span>
+                        <span class="price-unit">/ 200次</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✅ 200 次生成额度</li>
+                        <li>✅ 全部风格可用</li>
+                        <li>✅ 高清下载</li>
+                        <li>✅ 批量生成</li>
+                        <li>✅ 优先队列</li>
+                    </ul>
+                    <button class="btn-pricing" onclick="recharge('pro')">立即购买</button>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-badge">企业</div>
+                    <h3>企业套餐</h3>
+                    <div class="pricing-price">
+                        <span class="price-num">¥99</span>
+                        <span class="price-unit">/ 1000次</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✅ 1000 次生成额度</li>
+                        <li>✅ 全部风格可用</li>
+                        <li>✅ 高清下载</li>
+                        <li>✅ 批量生成</li>
+                        <li>✅ 优先队列 + API</li>
+                    </ul>
+                    <button class="btn-pricing" onclick="recharge('enterprise')">立即购买</button>
+                </div>
+            </div>
+        </section>
+
         <!-- Features -->
         <section class="features-section">
             <h2>为什么选择 AI 写真馆</h2>
             <div class="features-grid">
-                <div class="feature-item">
-                    <div class="feature-icon">⚡</div>
-                    <h4>极速生成</h4>
-                    <p>30 秒内完成，无需等待</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🎯</div>
-                    <h4>高度还原</h4>
-                    <p>保留你的五官特征，自然真实</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">💰</div>
-                    <h4>超低成本</h4>
-                    <p>每次仅需几毛钱，影楼价格的 1/100</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🔒</div>
-                    <h4>隐私安全</h4>
-                    <p>照片即用即删，不保存不泄露</p>
-                </div>
+                <div class="feature-item"><div class="feature-icon">⚡</div><h4>极速生成</h4><p>30 秒内完成，无需等待</p></div>
+                <div class="feature-item"><div class="feature-icon">🎯</div><h4>高度还原</h4><p>保留你的五官特征，自然真实</p></div>
+                <div class="feature-item"><div class="feature-icon">💰</div><h4>超低成本</h4><p>每次仅需几毛钱，影楼价格的 1/100</p></div>
+                <div class="feature-item"><div class="feature-icon">🔒</div><h4>隐私安全</h4><p>照片即用即删，不保存不泄露</p></div>
             </div>
         </section>
 
         <!-- Footer -->
         <footer>
             <div class="footer-content">
-                <div class="footer-brand">
-                    <span class="logo-icon">✨</span>
-                    <span>AI 写真馆</span>
-                </div>
+                <div class="footer-brand"><span class="logo-icon">✨</span><span>AI 写真馆</span></div>
                 <p class="footer-copy">Made with 💙 by cc & fei142982 · 2026</p>
             </div>
         </footer>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal" style="display:none">
+        <div class="modal">
+            <button class="modal-close" onclick="closeLoginModal()">✕</button>
+            <div class="modal-tabs">
+                <button class="modal-tab active" onclick="switchTab('login')">登录</button>
+                <button class="modal-tab" onclick="switchTab('register')">注册</button>
+            </div>
+            <!-- Login Form -->
+            <form class="modal-form" id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="email" id="loginEmail" placeholder="请输入邮箱" required>
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="loginPassword" placeholder="请输入密码" required>
+                </div>
+                <button type="submit" class="btn-submit">登录</button>
+                <p class="form-hint">没有账号？<a href="#" onclick="switchTab('register')">立即注册</a></p>
+            </form>
+            <!-- Register Form -->
+            <form class="modal-form" id="registerForm" style="display:none" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" id="regName" placeholder="请输入用户名" required>
+                </div>
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="email" id="regEmail" placeholder="请输入邮箱" required>
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="regPassword" placeholder="请输入密码（至少6位）" minlength="6" required>
+                </div>
+                <button type="submit" class="btn-submit">注册并获取 5 次免费额度</button>
+                <p class="form-hint">已有账号？<a href="#" onclick="switchTab('login')">立即登录</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Recharge Modal -->
+    <div class="modal-overlay" id="rechargeModal" style="display:none">
+        <div class="modal">
+            <button class="modal-close" onclick="closeRechargeModal()">✕</button>
+            <h2 style="margin-bottom: 8px;">💎 充值中心</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 24px;">选择套餐，即买即用</p>
+            <div class="recharge-options">
+                <div class="recharge-item" onclick="selectRecharge('standard')">
+                    <div class="recharge-info">
+                        <strong>标准套餐</strong>
+                        <span>50 次额度</span>
+                    </div>
+                    <div class="recharge-price">¥9.9</div>
+                </div>
+                <div class="recharge-item selected" onclick="selectRecharge('pro')">
+                    <div class="recharge-info">
+                        <strong>专业套餐</strong>
+                        <span>200 次额度</span>
+                    </div>
+                    <div class="recharge-price">¥29.9</div>
+                    <div class="recharge-tag">推荐</div>
+                </div>
+                <div class="recharge-item" onclick="selectRecharge('enterprise')">
+                    <div class="recharge-info">
+                        <strong>企业套餐</strong>
+                        <span>1000 次额度</span>
+                    </div>
+                    <div class="recharge-price">¥99</div>
+                </div>
+            </div>
+            <button class="btn-submit" onclick="confirmRecharge()">确认充值（模拟）</button>
+            <p class="form-hint" style="margin-top: 12px;">⚠️ 这是演示项目，充值为模拟操作</p>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div class="modal-overlay" id="historyModal" style="display:none">
+        <div class="modal modal-large">
+            <button class="modal-close" onclick="closeHistoryModal()">✕</button>
+            <h2 style="margin-bottom: 8px;">📜 生成记录</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 24px;">你的 AI 写真生成历史</p>
+            <div class="history-list" id="historyList">
+                <div class="history-empty">暂无记录，快去生成你的第一张写真吧！</div>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
