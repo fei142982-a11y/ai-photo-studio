@@ -126,21 +126,34 @@ async function generate() {
 
     try {
         const base64 = await fileToBase64(uploadedFile);
-        const response = await fetch('/api/generate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                image: base64,
-                style: selectedStyle,
-                prompt: stylePrompts[selectedStyle]
-            })
-        });
-        const data = await response.json();
+
+        // 尝试调用后端 API，如果不可用则使用演示模式
+        let data;
+        try {
+            const response = await fetch('/api/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    image: base64,
+                    style: selectedStyle,
+                    prompt: stylePrompts[selectedStyle]
+                })
+            });
+            data = await response.json();
+        } catch (apiErr) {
+            // 后端不可用，使用演示模式（直接显示原图+风格滤镜）
+            console.log('后端不可用，进入演示模式');
+            data = {
+                success: true,
+                imageUrl: base64,
+                demo: true
+            };
+        }
 
         if (data.success) {
             resultImageUrl = data.imageUrl;
             document.getElementById('resultImg').src = data.imageUrl;
-            document.getElementById('resultStyle').textContent = selectedStyle;
+            document.getElementById('resultStyle').textContent = selectedStyle + (data.demo ? '（演示模式）' : '');
             resultSection.style.display = 'block';
 
             // 扣除额度
